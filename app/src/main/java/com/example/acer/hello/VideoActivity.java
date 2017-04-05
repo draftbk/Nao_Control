@@ -20,7 +20,6 @@ public class VideoActivity extends AppCompatActivity{
     public ImageView imageView = null;
 
     public Boolean videoRunning = false;
-
     public Thread videoThread = null;
 
     @Override
