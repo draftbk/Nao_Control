@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="0dp"
+    android:paddingLeft="0dp"
+    android:paddingRight="0dp"
+    android:paddingTop="0dp"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.example.acer.hello.MainActivity"
+    tools:showIn="@layout/activity_main"
+    android:id="@+id/content_main"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:paddingBottom="0dp"
+        android:paddingLeft="0dp"
+        android:paddingRight="0dp"
+        android:paddingTop="0dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context="com.example.acer.hello.MainActivity"
+        tools:showIn="@layout/activity_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/runningTextView"
+        android:id="@+id/treeLayer"
+        android:layout_above="@+id/currentPosture">
+
+        <ListView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/TreeListView"
+            android:layout_alignParentTop="false"
+            android:layout_marginRight="0dp"
+            android:layout_marginEnd="0dp"
+            android:layout_alignParentEnd="false"
+            android:headerDividersEnabled="true" />
+
+    </RelativeLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="connect"
+        android:id="@+id/connectButton"
+        android:clickable="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:inputType="text"
+        android:hint="IP of NAO"
+        android:id="@+id/ipInputBox"
+        android:layout_toLeftOf="@+id/connectButton" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/deviceSpinner"
+        android:layout_marginBottom="0dp"
+        android:layout_alignParentRight="false"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="视频窗口"
+        android:id="@+id/SwitchToVideo"
+        android:layout_above="@+id/connectButton"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="false" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Stop Behaviors"
+        android:id="@+id/StopBehavior"
+        android:layout_above="@+id/SwitchToVideo"
+        android:layout_alignRight="@+id/SwitchToVideo"
+        android:layout_alignEnd="@+id/SwitchToVideo" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="正在运行的行为："
+        android:id="@+id/runningTextView"
+        android:layout_alignParentTop="false"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/deviceSpinner" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/postureSpinner"
+        android:layout_alignParentBottom="false"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/ipInputBox"
+        android:layout_toLeftOf="@+id/SwitchToVideo"
+        android:layout_below="@+id/StopBehavior" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="机器人姿态"
+        android:id="@+id/currentPosture"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@+id/StopBehavior"
+        android:layout_above="@+id/postureSpinner"
+        android:layout_alignTop="@+id/StopBehavior" />
+
+    <ImageButton
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:id="@+id/stiffnessButton"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:cropToPadding="false"
+        android:adjustViewBounds="false"
+        android:background="@drawable/stiffness_button_green" />
+
+
+</RelativeLayout>
