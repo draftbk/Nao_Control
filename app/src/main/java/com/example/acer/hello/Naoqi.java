@@ -32,7 +32,6 @@ public class Naoqi {
             e.printStackTrace();
         }
     }
-
     public void stop(){
         running = false;
         app.stop();
