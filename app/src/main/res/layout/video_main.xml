@@ -11,11 +11,36 @@
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="返回主界面"
-        android:id="@+id/return_to_main"
+        android:text="左"
+        android:id="@+id/left_btn"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="上"
+        android:id="@+id/top_btn"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/left_btn"/>
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="下"
+        android:id="@+id/bottom_btn"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/top_btn"/>
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="右"
+        android:id="@+id/right_btn"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/bottom_btn"/>
+
 
     <Button
         android:layout_width="wrap_content"

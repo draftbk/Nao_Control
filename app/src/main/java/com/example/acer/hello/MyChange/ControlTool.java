@@ -14,7 +14,6 @@ import java.net.UnknownHostException;
 
 public class ControlTool {
     public static void connectServerWithTCPSocket(String number) {
-
         Socket socket;
         try {// 创建一个Socket对象，并指定服务端的IP及端口号
             socket = new Socket("192.168.0.100",6688);

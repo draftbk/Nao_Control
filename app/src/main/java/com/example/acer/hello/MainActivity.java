@@ -68,9 +68,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void init(){
-        checkIfFirstRunning();
+//        checkIfFirstRunning();
         initToolbar();
-        initRunningBehavior();
+//        initRunningBehavior();
         initCrashHandler();
         initDeviceSpinner();
         initStopBehaviorButton();
@@ -88,45 +88,12 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("Got Version in Preferences: "+_version);
         final SharedPreferences.Editor editor = sharedPreferences.edit();
 
-
-        if(!_version.equals(Version.Version)){
-            //first time
-
-            new AlertDialog.Builder(MainActivity.this).setTitle("免责声明")
-                    .setMessage("本软件供您免费使用。\n" +
-                            "您同意作者未就软件进行任何明示担保，" +
-                            "以及本软件是在不做出任何形式担保的情况下按“现状”提供。" +
-                            "作者不对软件进行任何明示或默示担保，" +
-                            "包括但不限于适用于特定用途、适销性、" +
-                            "可销售品质或不侵犯第三方权利的默示担保。" +
-                            "前述责任排除和限制在适用法律的最大允许范围内有效，" +
-                            "即使补救措施未能有效发挥作用。" +
-                            "作者不为本软件提供支持服务。\n\n"+
-                            "除法律规定不得排除或限制的任何赔偿外，" +
-                            "作者在任何情况下都不对任何损失、损害、索赔或费用，" +
-                            "包括任何间接、相应而生、附带的损失或任何失去的利润或储蓄，" +
-                            "或因业务中断、人身伤害或不履行照顾责任或第三方索赔而引致的任何损害承担任何责任，")
-                    .setPositiveButton("接受", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            editor.putString(Version.VersionKeyForSharedPreferences,Version.Version);
-                            editor.commit();
-                        }
-                    }).setNegativeButton("拒绝", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    System.exit(0);
-                }
-            }).show();
-
-
-        }
     }
 
     private void initToolbar(){
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         //Toolbar的setTitle方法要在setSupportActionBar(toolbar)之前调用，否则不起作用
-        toolbar.setTitle("Unconnected");
+        toolbar.setTitle("连接");
         setSupportActionBar(toolbar);
     }
 
@@ -263,7 +230,7 @@ public class MainActivity extends AppCompatActivity {
                     Naoqi.getInstance().stop();
                     postureManager.interrupt();
                     stiffnessManager.interrupt();
-                    BehaviorManager.getInstance().interrupt();
+                     BehaviorManager.getInstance().interrupt();
                     System.out.println("tried to disconnect");
                     connectButton.setText("connect");
                     imgRunning = false;

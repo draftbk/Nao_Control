@@ -9,16 +9,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.example.acer.hello.MyChange.ControlTool;
 
 
 public class VideoActivity extends AppCompatActivity{
 
     public View VideoView = null;
-    public Button mReturnButton = null;
+    public Button leftBtn,rightBtn,topBtn,bottomBtn = null;
     public Button mPlayVideoButton = null;
     public Handler imageViewHandler = null;
     public ImageView imageView = null;
-
     public Boolean videoRunning = false;
     public Thread videoThread = null;
 
@@ -27,13 +29,43 @@ public class VideoActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         VideoView = getLayoutInflater().inflate(R.layout.video_main,null);
         setContentView(VideoView);
+        init();
+    }
+
+    private void init() {
         imageView = (ImageView) findViewById(R.id.imageView);
         imageView.setImageResource(R.drawable.ic_launcher);
-        mReturnButton = (Button) findViewById(R.id.return_to_main);
-        mReturnButton.setOnClickListener(new View.OnClickListener() {
+        // 左右上下
+        leftBtn = (Button) findViewById(R.id.left_btn);
+        leftBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                Toast.makeText(VideoActivity.this,"左",Toast.LENGTH_SHORT).show();
+//                ControlTool.connectServerWithTCPSocket("1");
+            }
+        });
+        rightBtn = (Button) findViewById(R.id.right_btn);
+        rightBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(VideoActivity.this,"右",Toast.LENGTH_SHORT).show();
+//                ControlTool.connectServerWithTCPSocket("1");
+            }
+        });
+        topBtn = (Button) findViewById(R.id.top_btn);
+        topBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(VideoActivity.this,"上",Toast.LENGTH_SHORT).show();
+//                ControlTool.connectServerWithTCPSocket("1");
+            }
+        });
+        bottomBtn = (Button) findViewById(R.id.bottom_btn);
+        bottomBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(VideoActivity.this,"下",Toast.LENGTH_SHORT).show();
+//                ControlTool.connectServerWithTCPSocket("1");
             }
         });
 
@@ -68,7 +100,6 @@ public class VideoActivity extends AppCompatActivity{
 
             }
         });
-
     }
 
     @Override
