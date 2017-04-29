@@ -59,7 +59,7 @@ public class GetImage implements Runnable{
             throw new Exception("interruped");
         Future<List<Object>> FutureImage = video.<List<Object>>call("getImageRemote",DeviceID);
         FutureImage.sync();
-//        try {
+        try {
             List<Object> ImageList = FutureImage.get();
             ByteBuffer byteBuffer = (ByteBuffer) ImageList.get(6);
             byte[] imgRawBuffer = byteBuffer.array();
@@ -68,9 +68,9 @@ public class GetImage implements Runnable{
             ByteBuffer ARBGbuffer = ByteBuffer.wrap(ARBG8888);
             bitmap.copyPixelsFromBuffer(ARBGbuffer);
             _sendMessageToImageView(bitmap);
-//        }catch (Exception e){
-//            Log.e("test","播放出错了"+e);
-//        }
+        }catch (Exception e){
+            Log.e("test","播放出错了"+e);
+        }
     }
 
 
@@ -83,7 +83,6 @@ public class GetImage implements Runnable{
             Future<String> futureDeviceID = video.<String>call("subscribeCamera", "dut", 0, 1, 11, 30);
             DeviceID = futureDeviceID.get();
             //_sendMessageToTextView("subscribeCamera DeviceID:" + DeviceID + "\n");
-
             while (true){
                 synchronized (objLock){
                     if (shouldStop)
@@ -105,6 +104,5 @@ public class GetImage implements Runnable{
             e.printStackTrace();
             System.out.println(e.getMessage());
         }
-
     }
 }

@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.a520wcf.yllistview.YLListView;
 import com.example.acer.hello.R;
 
@@ -62,6 +64,7 @@ public class PostureActivity extends AppCompatActivity {
                             controlTool.connectServerWithTCPSocket("53");
                         }
                     }).start();
+                    Toast.makeText(PostureActivity.this,"发送："+"53",Toast.LENGTH_LONG).show();
                 }else {
                     new Thread(new Runnable() {
                         @Override
@@ -69,6 +72,7 @@ public class PostureActivity extends AppCompatActivity {
                             controlTool.connectServerWithTCPSocket((finalPosition +1)+"");//2-17
                         }
                     }).start();
+                    Toast.makeText(PostureActivity.this,"发送："+(finalPosition +1),Toast.LENGTH_LONG).show();
                 }
             }
         });

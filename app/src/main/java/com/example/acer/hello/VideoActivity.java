@@ -115,7 +115,7 @@ public class VideoActivity extends AppCompatActivity{
         photoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(VideoActivity.this,"下",Toast.LENGTH_SHORT).show();
+                Toast.makeText(VideoActivity.this,"照片存储到相册...",Toast.LENGTH_SHORT).show();
 //                ControlTool.connectServerWithTCPSocket("1");
 //                saveMyBitmap(bitmap,"nao");
                 saveImageToGallery(VideoActivity.this,bitmap);
@@ -137,9 +137,12 @@ public class VideoActivity extends AppCompatActivity{
             public void onClick(View v){
                 boolean isRunning = false;
                 synchronized (videoRunning){
+                    Log.e("test","videoRunning.............."+videoRunning);
                     isRunning = videoRunning;
                 }
+//                if(mPlayVideoButton.getText().equals("播放")){
                 if(!isRunning){
+                    Log.e("test","videoState.............."+"play");
                     videoRunning = true;
                     GetImage getImage = new GetImage(null,imageViewHandler);
                     videoThread = new Thread(getImage);
@@ -147,6 +150,7 @@ public class VideoActivity extends AppCompatActivity{
                     mPlayVideoButton.setText("停止播放");
                 }
                 else{
+                    Log.e("test","videoState............................"+"stop");
                     videoRunning = false;
                     videoThread.interrupt();
                     mPlayVideoButton.setText("播放");
@@ -165,6 +169,10 @@ public class VideoActivity extends AppCompatActivity{
     @Override
     protected void onPause(){
         super.onPause();
+        if (videoRunning){
+            videoRunning = false;
+            videoThread.interrupt();
+        }
         System.out.println(this.getLocalClassName()+"  paused");
     }
 
@@ -172,35 +180,6 @@ public class VideoActivity extends AppCompatActivity{
     @Override
     protected void onNewIntent(Intent intent){
         super.onNewIntent(intent);
-    }
-    public void saveMyBitmap(Bitmap mBitmap,String bitName)  {
-        File f = new File(
-                getExternalFilesDir(Environment.DIRECTORY_DCIM).getPath()+bitName + ".jpg");
-        FileOutputStream fOut = null;
-        try {
-            Log.e("test",1+"");
-            fOut = new FileOutputStream(f);
-        } catch (FileNotFoundException e) {
-            Log.e("test",2+"");
-            e.printStackTrace();
-        }
-        Log.e("test",3+"");
-        mBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
-        try {
-            Log.e("test",4+"");
-            fOut.flush();
-        } catch (IOException e) {
-            Log.e("test",5+"");
-            e.printStackTrace();
-        }
-        Log.e("test",6+"");
-        try {
-            Log.e("test",7+"");
-            fOut.close();
-        } catch (IOException e) {
-            Log.e("test",8+"");
-            e.printStackTrace();
-        }
     }
     public static void saveImageToGallery(Context context, Bitmap bmp) {
         // 首先保存图片
@@ -221,7 +200,6 @@ public class VideoActivity extends AppCompatActivity{
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         // 其次把文件插入到系统图库
         try {
             MediaStore.Images.Media.insertImage(context.getContentResolver(),

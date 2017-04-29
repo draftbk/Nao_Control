@@ -115,6 +115,37 @@
             android:layout_alignParentTop="true" />
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+        android:id="@+id/ipInputAddress"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="10dp"
+        android:layout_toLeftOf="@+id/connectButton"
+        android:gravity="center"
+        android:hint="192.168.0.105"
+        android:inputType="text" />
+        <EditText
+        android:id="@+id/ipInputDuanKou"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="10dp"
+        android:layout_toLeftOf="@+id/connectButton"
+        android:gravity="center"
+        android:hint="6688"
+        android:inputType="text" />
+    </LinearLayout>
+
 
     <Switch
         android:id="@+id/connectButton"

@@ -40,7 +40,7 @@ public class ControlTool {
         // 创建一个Socket对象，并指定服务端的IP及端口号
         try {
             socket = new Socket("192.168.0.105",6688);
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         Log.e("test","Connected to server...sending echo string");
