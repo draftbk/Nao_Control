@@ -56,7 +56,7 @@ public class VideoActivity extends AppCompatActivity{
 
     private void init() {
         imageView = (ImageView) findViewById(R.id.imageView);
-        imageView.setImageResource(R.drawable.ic_launcher);
+        imageView.setImageResource(R.drawable.screen);
         // 左右上下
         leftBtn = (Button) findViewById(R.id.left_btn);
         leftBtn.setOnClickListener(new View.OnClickListener() {

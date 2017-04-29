@@ -20,7 +20,7 @@
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="上"
+        android:text="前"
         android:id="@+id/top_btn"
         android:layout_alignParentBottom="true"
         android:layout_toRightOf="@+id/left_btn"/>
@@ -28,7 +28,7 @@
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="下"
+        android:text="后"
         android:id="@+id/bottom_btn"
         android:layout_alignParentBottom="true"
         android:layout_toRightOf="@+id/top_btn"/>

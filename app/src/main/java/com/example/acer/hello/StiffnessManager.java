@@ -116,16 +116,21 @@ class StiffnessManagerThread implements Runnable{
                     stiffnessManager.getStiffnessManagerHandler();
 
             while(true){
-                Future<List<Float>> stiffnessesFuture = naoqiALMotion.call("getStiffnesses","Body");
-                stiffnessesFuture.sync();
-                List<Float> stiffness = stiffnessesFuture.get();
-                if(StiffnessManagerHandler != null){
-                    Message msg = new Message();
-                    msg.obj = stiffness.get(0);
-                    StiffnessManagerHandler.sendMessage(msg);
+                try {
+                    Future<List<Float>> stiffnessesFuture = naoqiALMotion.call("getStiffnesses","Body");
+                    stiffnessesFuture.sync();
+                    List<Float> stiffness = stiffnessesFuture.get();
+                    if(StiffnessManagerHandler != null){
+                        Message msg = new Message();
+                        msg.obj = stiffness.get(0);
+                        StiffnessManagerHandler.sendMessage(msg);
+                    }
+                    stiffnessManager.setStiffness(stiffness.get(0));
+                    Thread.sleep(200);
+                }catch (Exception e){
+
                 }
-                stiffnessManager.setStiffness(stiffness.get(0));
-                Thread.sleep(200);
+
             }
 
         }

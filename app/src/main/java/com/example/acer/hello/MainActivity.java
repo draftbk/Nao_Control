@@ -28,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aldebaran.qi.Future;
+import com.example.acer.hello.MyChange.ControlTool;
 import com.example.acer.hello.MyChange.FirstActivity;
 
 import java.util.ArrayList;
@@ -59,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
     public StiffnessManager stiffnessManager = null;
     public Handler stiffnessHandler = null;
     public ImageButton stiffnessButton = null;
+    public ControlTool controlTool;
 
 
     @Override
@@ -67,7 +69,25 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         init();
     }
+    private void initControlTool() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                controlTool= ControlTool.getInstance();
+            }
+        }).start();
 
+    }
+    private void stopMySocket() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                controlTool.connectServerWithTCPSocket("exit");
+                controlTool.stopScoket();
+            }
+        }).start();
+
+    }
     private void init(){
         checkIfFirstRunning();
         initToolbar();
@@ -214,6 +234,7 @@ public class MainActivity extends AppCompatActivity {
                             BehaviorManager.getInstance().Init(Naoqi.getInstance());
                             postureManager.Init(postureManagerHandler);
                             stiffnessManager.Init(stiffnessHandler);
+                            initControlTool();
                         }
                         catch (Exception e){
                             e.printStackTrace();
@@ -224,6 +245,7 @@ public class MainActivity extends AppCompatActivity {
                         Message msg = new Message();
                         msg.obj = ip + "is invalid\n";
                     }
+                    stopMySocket();
                     connectButton.setText("disconnect");
                 }
                 else{
@@ -231,7 +253,7 @@ public class MainActivity extends AppCompatActivity {
                     Naoqi.getInstance().stop();
                     postureManager.interrupt();
                     stiffnessManager.interrupt();
-                     BehaviorManager.getInstance().interrupt();
+                    BehaviorManager.getInstance().interrupt();
                     System.out.println("tried to disconnect");
                     connectButton.setText("connect");
                     imgRunning = false;
@@ -517,5 +539,6 @@ class CrashHandler implements Thread.UncaughtExceptionHandler {
         ex.printStackTrace();
         String threadName = thread.getName();
     }
+
 
 }

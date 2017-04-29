@@ -28,6 +28,14 @@ public class ControlTool {
         }
         return instance;
     }
+    public void stopScoket(){
+        try {
+            socket.close();
+            instance=null;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     ControlTool() {
         // 创建一个Socket对象，并指定服务端的IP及端口号
         try {
