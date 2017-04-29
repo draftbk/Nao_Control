@@ -16,7 +16,7 @@ import com.example.acer.hello.R;
 public class PostureActivity extends AppCompatActivity {
     private YLListView listView;
     private ControlTool controlTool;
-    private String[] postures=new String[]{"restAndUp","LHForOpen","RHForOpen","BHCrossDown","BHCrossUp",
+    private String[] postures=new String[]{"Dance","restAndUp","LHForOpen","RHForOpen","BHCrossDown","BHCrossUp",
             "ChestForLeft","LHhorUp","BHForOpen","PointToRight","RUpLeftToFor","PointToLeft","UpPointToLeft","ChestForRight","RHhorUp",
             "RHhorizon","LUpRightToFor","Nao_rest"};
     @Override
@@ -55,13 +55,21 @@ public class PostureActivity extends AppCompatActivity {
                 position=position-listView.getHeaderViewsCount();
                 Log.e("test","position"+position);
                 final int finalPosition = position;
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        controlTool.connectServerWithTCPSocket((finalPosition +2)+"");//2-17
-                    }
-                }).start();
-
+                if (finalPosition==0){
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            controlTool.connectServerWithTCPSocket("53");
+                        }
+                    }).start();
+                }else {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            controlTool.connectServerWithTCPSocket((finalPosition +1)+"");//2-17
+                        }
+                    }).start();
+                }
             }
         });
     }

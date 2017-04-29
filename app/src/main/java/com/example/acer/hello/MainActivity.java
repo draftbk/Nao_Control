@@ -24,6 +24,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,7 +40,7 @@ import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
     public Button stopBehaviorButton = null;
-    public Button connectButton = null;
+    public Switch connectSwitch = null;
     public Spinner deviceSpinner = null;
     public ArrayAdapter<String> deviceSpinnerAdapter = null;
     public Handler deviceSpinnerHandler = null;
@@ -205,8 +206,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void initConnectionButton(){
 
-        connectButton = (Button) findViewById(R.id.connectButton);
-        connectButton.setOnClickListener(new View.OnClickListener(){
+        connectSwitch = (Switch) findViewById(R.id.connectButton);
+        connectSwitch.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
                 boolean running = false;
@@ -245,8 +246,6 @@ public class MainActivity extends AppCompatActivity {
                         Message msg = new Message();
                         msg.obj = ip + "is invalid\n";
                     }
-                    stopMySocket();
-                    connectButton.setText("disconnect");
                 }
                 else{
                     ipTextfield.setKeyListener(keyListener);
@@ -255,7 +254,7 @@ public class MainActivity extends AppCompatActivity {
                     stiffnessManager.interrupt();
                     BehaviorManager.getInstance().interrupt();
                     System.out.println("tried to disconnect");
-                    connectButton.setText("connect");
+                    stopMySocket();
                     imgRunning = false;
                 }
 

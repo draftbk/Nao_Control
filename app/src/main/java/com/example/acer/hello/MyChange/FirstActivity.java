@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.example.acer.hello.MainActivity;
 import com.example.acer.hello.R;
 import com.example.acer.hello.VideoActivity;
 import com.hitomi.cmlibrary.CircleMenu;
@@ -43,8 +44,8 @@ public class FirstActivity extends AppCompatActivity {
         circleMenu.setMainMenu(Color.parseColor("#4169E1"), R.mipmap.button, R.mipmap.wall)
                 .addSubMenu(Color.parseColor("#FF4B32"), R.mipmap.music)
                 .addSubMenu(Color.parseColor("#258CFF"), R.mipmap.cloud)
-                .addSubMenu(Color.parseColor("#30A400"), R.mipmap.email)
                 .addSubMenu(Color.parseColor("#7B68EE"), R.mipmap.dance)
+                .addSubMenu(Color.parseColor("#30A400"), R.mipmap.settings)
                 .addSubMenu(Color.parseColor("#FF6A00"), R.mipmap.laugh)
                 .addSubMenu(Color.parseColor("#778899"), R.mipmap.camera)
                 .setOnMenuSelectedListener(new OnMenuSelectedListener() {
@@ -72,13 +73,7 @@ public class FirstActivity extends AppCompatActivity {
                                 }).start();
                                 break;
                             case 2:
-                                Toast.makeText(getApplicationContext(), "发送邮件",
-                                        Toast.LENGTH_SHORT).show();
-                                Intent intent3=new Intent(FirstActivity.this,PostureActivity.class);
-                                startActivity(intent3);
-                                break;
-                            case 3:
-                                Toast.makeText(getApplicationContext(), "跳舞",
+                                Toast.makeText(getApplicationContext(), "列表",
                                         Toast.LENGTH_SHORT).show();
                                 new Thread(new Runnable() {
                                     @Override
@@ -86,6 +81,14 @@ public class FirstActivity extends AppCompatActivity {
                                         controlTool.connectServerWithTCPSocket("24");
                                     }
                                 }).start();
+                                Intent intent2=new Intent(FirstActivity.this,PostureActivity.class);
+                                startActivity(intent2);
+                                break;
+                            case 3:
+                                Toast.makeText(getApplicationContext(), "设置",
+                                        Toast.LENGTH_SHORT).show();
+                                Intent intent3=new Intent(FirstActivity.this,MainActivity.class);
+                                startActivity(intent3);
                                 break;
                             case 4:
                                 Toast.makeText(getApplicationContext(), "讲笑话",
