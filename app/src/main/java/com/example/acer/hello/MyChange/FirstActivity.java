@@ -2,6 +2,8 @@ package com.example.acer.hello.MyChange;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -12,14 +14,30 @@ import com.hitomi.cmlibrary.CircleMenu;
 import com.hitomi.cmlibrary.OnMenuSelectedListener;
 import com.hitomi.cmlibrary.OnMenuStatusChangeListener;
 
+import java.net.Socket;
+
 public class FirstActivity extends AppCompatActivity {
     private CircleMenu circleMenu;
+    private  ControlTool controlTool;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first);
+        initControlTool();
+
         init();
     }
+
+    private void initControlTool() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                controlTool=ControlTool.getInstance();
+            }
+        }).start();
+
+    }
+
     private void init() {
         circleMenu = (CircleMenu) findViewById(R.id.circle_menu);
 
@@ -31,31 +49,54 @@ public class FirstActivity extends AppCompatActivity {
                 .addSubMenu(Color.parseColor("#FF6A00"), R.mipmap.laugh)
                 .addSubMenu(Color.parseColor("#778899"), R.mipmap.camera)
                 .setOnMenuSelectedListener(new OnMenuSelectedListener() {
-
                     @Override
                     public void onMenuSelected(int index) {
                         switch (index){
                             case 0:
                                 Toast.makeText(getApplicationContext(), "播放音乐",
                                         Toast.LENGTH_SHORT).show();
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                            controlTool.connectServerWithTCPSocket("31");
+                                    }
+                                }).start();
                                 break;
                             case 1:
                                 Toast.makeText(getApplicationContext(), "天气预报",
                                         Toast.LENGTH_SHORT).show();
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        controlTool.connectServerWithTCPSocket("25");
+                                    }
+                                }).start();
                                 break;
                             case 2:
                                 Toast.makeText(getApplicationContext(), "发送邮件",
                                         Toast.LENGTH_SHORT).show();
+                                Intent intent3=new Intent(FirstActivity.this,PostureActivity.class);
+                                startActivity(intent3);
                                 break;
                             case 3:
                                 Toast.makeText(getApplicationContext(), "跳舞",
                                         Toast.LENGTH_SHORT).show();
-                                Intent intent3=new Intent(FirstActivity.this,PostureActivity.class);
-                                startActivity(intent3);
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        controlTool.connectServerWithTCPSocket("24");
+                                    }
+                                }).start();
                                 break;
                             case 4:
                                 Toast.makeText(getApplicationContext(), "讲笑话",
                                         Toast.LENGTH_SHORT).show();
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        controlTool.connectServerWithTCPSocket("32");
+                                    }
+                                }).start();
                                 break;
                             case 5:
                                 Toast.makeText(getApplicationContext(), "视觉",
@@ -75,5 +116,6 @@ public class FirstActivity extends AppCompatActivity {
             public void onMenuClosed() {}
 
         });
+
     }
 }

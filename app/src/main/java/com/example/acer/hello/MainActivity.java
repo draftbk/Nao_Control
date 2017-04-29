@@ -28,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aldebaran.qi.Future;
+import com.example.acer.hello.MyChange.FirstActivity;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -68,9 +69,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void init(){
-//        checkIfFirstRunning();
+        checkIfFirstRunning();
         initToolbar();
-//        initRunningBehavior();
+        initRunningBehavior();
         initCrashHandler();
         initDeviceSpinner();
         initStopBehaviorButton();
@@ -456,6 +457,8 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_author) {
+            Intent intent=new Intent(MainActivity.this, FirstActivity.class);
+            startActivity(intent);
             return true;
         }
 

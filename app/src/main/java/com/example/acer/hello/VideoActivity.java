@@ -1,11 +1,16 @@
 package com.example.acer.hello;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -13,16 +18,23 @@ import android.widget.Toast;
 
 import com.example.acer.hello.MyChange.ControlTool;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 
 public class VideoActivity extends AppCompatActivity{
 
     public View VideoView = null;
-    public Button leftBtn,rightBtn,topBtn,bottomBtn = null;
+    public Button leftBtn,rightBtn,topBtn,bottomBtn,photoBtn= null;
     public Button mPlayVideoButton = null;
     public Handler imageViewHandler = null;
     public ImageView imageView = null;
     public Boolean videoRunning = false;
     public Thread videoThread = null;
+    private Bitmap bitmap=null;
+    private ControlTool controlTool;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -30,6 +42,16 @@ public class VideoActivity extends AppCompatActivity{
         VideoView = getLayoutInflater().inflate(R.layout.video_main,null);
         setContentView(VideoView);
         init();
+        initControlTool();
+    }
+    private void initControlTool() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                controlTool=ControlTool.getInstance();
+            }
+        }).start();
+
     }
 
     private void init() {
@@ -41,7 +63,12 @@ public class VideoActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 Toast.makeText(VideoActivity.this,"左",Toast.LENGTH_SHORT).show();
-//                ControlTool.connectServerWithTCPSocket("1");
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        controlTool.connectServerWithTCPSocket("22");
+                    }
+                }).start();
             }
         });
         rightBtn = (Button) findViewById(R.id.right_btn);
@@ -49,7 +76,12 @@ public class VideoActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 Toast.makeText(VideoActivity.this,"右",Toast.LENGTH_SHORT).show();
-//                ControlTool.connectServerWithTCPSocket("1");
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        controlTool.connectServerWithTCPSocket("23");
+                    }
+                }).start();
             }
         });
         topBtn = (Button) findViewById(R.id.top_btn);
@@ -57,7 +89,12 @@ public class VideoActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 Toast.makeText(VideoActivity.this,"上",Toast.LENGTH_SHORT).show();
-//                ControlTool.connectServerWithTCPSocket("1");
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        controlTool.connectServerWithTCPSocket("20");
+                    }
+                }).start();
             }
         });
         bottomBtn = (Button) findViewById(R.id.bottom_btn);
@@ -65,7 +102,23 @@ public class VideoActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 Toast.makeText(VideoActivity.this,"下",Toast.LENGTH_SHORT).show();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        controlTool.connectServerWithTCPSocket("21");
+                    }
+                }).start();
+            }
+        });
+
+        photoBtn = (Button) findViewById(R.id.photo_btn);
+        photoBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(VideoActivity.this,"下",Toast.LENGTH_SHORT).show();
 //                ControlTool.connectServerWithTCPSocket("1");
+//                saveMyBitmap(bitmap,"nao");
+                saveImageToGallery(VideoActivity.this,bitmap);
             }
         });
 
@@ -73,6 +126,7 @@ public class VideoActivity extends AppCompatActivity{
             @Override
             public void handleMessage(Message msg){
                 imageView.setImageBitmap((Bitmap)msg.obj);
+                bitmap=(Bitmap)msg.obj;
             }
         };
 
@@ -118,6 +172,66 @@ public class VideoActivity extends AppCompatActivity{
     @Override
     protected void onNewIntent(Intent intent){
         super.onNewIntent(intent);
+    }
+    public void saveMyBitmap(Bitmap mBitmap,String bitName)  {
+        File f = new File(
+                getExternalFilesDir(Environment.DIRECTORY_DCIM).getPath()+bitName + ".jpg");
+        FileOutputStream fOut = null;
+        try {
+            Log.e("test",1+"");
+            fOut = new FileOutputStream(f);
+        } catch (FileNotFoundException e) {
+            Log.e("test",2+"");
+            e.printStackTrace();
+        }
+        Log.e("test",3+"");
+        mBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+        try {
+            Log.e("test",4+"");
+            fOut.flush();
+        } catch (IOException e) {
+            Log.e("test",5+"");
+            e.printStackTrace();
+        }
+        Log.e("test",6+"");
+        try {
+            Log.e("test",7+"");
+            fOut.close();
+        } catch (IOException e) {
+            Log.e("test",8+"");
+            e.printStackTrace();
+        }
+    }
+    public static void saveImageToGallery(Context context, Bitmap bmp) {
+        // 首先保存图片
+        File appDir = new File(Environment.getExternalStorageDirectory(), "Nao_pic");
+        if (!appDir.exists()) {
+            appDir.mkdir();
+        }
+        String fileName = System.currentTimeMillis() + ".jpg";
+        File file = new File(appDir, fileName);
+        try {
+            FileOutputStream fos = new FileOutputStream(file);
+            bmp.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            fos.flush();
+            fos.close();
+            Log.e("test",9+"");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // 其次把文件插入到系统图库
+        try {
+            MediaStore.Images.Media.insertImage(context.getContentResolver(),
+                    file.getAbsolutePath(), fileName, null);
+            Log.e("test",10+"");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        // 最后通知图库更新
+        context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + Environment.getExternalStorageDirectory())));
     }
 
 }

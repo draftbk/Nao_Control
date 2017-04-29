@@ -15,16 +15,25 @@ import com.example.acer.hello.R;
 
 public class PostureActivity extends AppCompatActivity {
     private YLListView listView;
-    private String[] postures=new String[]{"姿势一","姿势一","姿势一","姿势一","姿势一",
-            "姿势一","姿势一","姿势一","姿势一","姿势一","姿势一","姿势一","姿势一","姿势一",
-            "姿势一","姿势一","姿势一","姿势一"};
+    private ControlTool controlTool;
+    private String[] postures=new String[]{"restAndUp","LHForOpen","RHForOpen","BHCrossDown","BHCrossUp",
+            "ChestForLeft","LHhorUp","BHForOpen","PointToRight","RUpLeftToFor","PointToLeft","UpPointToLeft","ChestForRight","RHhorUp",
+            "RHhorizon","LUpRightToFor","Nao_rest"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_posture);
+        initControlTool();
         initList();
     }
-
+    private void initControlTool() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                controlTool=ControlTool.getInstance();
+            }
+        }).start();
+    }
     private void initList() {
         listView = (YLListView) findViewById(R.id.listView);
         // 不添加也有默认的头和底
@@ -49,7 +58,7 @@ public class PostureActivity extends AppCompatActivity {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        ControlTool.connectServerWithTCPSocket((finalPosition +2)+"");//2-17
+                        controlTool.connectServerWithTCPSocket((finalPosition +2)+"");//2-17
                     }
                 }).start();
 
@@ -59,7 +68,7 @@ public class PostureActivity extends AppCompatActivity {
     class DemoAdapter extends BaseAdapter {
         @Override
         public int getCount() {
-            return 18;
+            return postures.length;
         }
         @Override
         public Object getItem(int position) {

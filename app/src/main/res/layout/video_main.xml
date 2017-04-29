@@ -40,6 +40,14 @@
         android:id="@+id/right_btn"
         android:layout_alignParentBottom="true"
         android:layout_toRightOf="@+id/bottom_btn"/>
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="拍"
+        android:id="@+id/photo_btn"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/right_btn"/>
 
 
     <Button
@@ -51,8 +59,8 @@
         android:layout_alignParentRight="true" />
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
         android:id="@+id/imageView"
         android:contentDescription="@string/myimageview"
         android:layout_alignWithParentIfMissing="false"

@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.aldebaran.qi.AnyObject;
 import com.aldebaran.qi.Future;
@@ -33,6 +34,7 @@ public class GetImage implements Runnable{
             naoqi = Naoqi.getInstance();
         }
         catch (Exception e){
+            Log.e("test","得到naoqi错误");
             System.out.println(e.getMessage());
         }
 
@@ -57,14 +59,18 @@ public class GetImage implements Runnable{
             throw new Exception("interruped");
         Future<List<Object>> FutureImage = video.<List<Object>>call("getImageRemote",DeviceID);
         FutureImage.sync();
-        List<Object> ImageList = FutureImage.get();
-        ByteBuffer byteBuffer = (ByteBuffer) ImageList.get(6);
-        byte[] imgRawBuffer = byteBuffer.array();
-        byte[] ARBG8888 = Utillity.RBG888ToARBG8888(imgRawBuffer);
-        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        ByteBuffer ARBGbuffer = ByteBuffer.wrap(ARBG8888);
-        bitmap.copyPixelsFromBuffer(ARBGbuffer);
-        _sendMessageToImageView(bitmap);
+//        try {
+            List<Object> ImageList = FutureImage.get();
+            ByteBuffer byteBuffer = (ByteBuffer) ImageList.get(6);
+            byte[] imgRawBuffer = byteBuffer.array();
+            byte[] ARBG8888 = Utillity.RBG888ToARBG8888(imgRawBuffer);
+            Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+            ByteBuffer ARBGbuffer = ByteBuffer.wrap(ARBG8888);
+            bitmap.copyPixelsFromBuffer(ARBGbuffer);
+            _sendMessageToImageView(bitmap);
+//        }catch (Exception e){
+//            Log.e("test","播放出错了"+e);
+//        }
     }
 
 
@@ -89,6 +95,8 @@ public class GetImage implements Runnable{
                 Date date2 = new Date();
                 long t2 = date2.getTime();
                 Long dt = t2-t1;
+                System.out.println(" getIp? : "+naoqi.get_IP());
+                System.out.println(" DeviceID : "+futureDeviceID.get());
                 System.out.println("spend time : "+dt);
             }
 
