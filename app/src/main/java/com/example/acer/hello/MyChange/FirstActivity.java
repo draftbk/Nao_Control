@@ -32,7 +32,7 @@ public class FirstActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                controlTool=ControlTool.getInstance();
+                controlTool=ControlTool.getInstance(FirstActivity.this);
             }
         }).start();
 

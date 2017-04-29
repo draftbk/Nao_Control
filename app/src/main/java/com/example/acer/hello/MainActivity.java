@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.method.KeyListener;
+import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.view.Menu;
@@ -45,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     public ArrayAdapter<String> deviceSpinnerAdapter = null;
     public Handler deviceSpinnerHandler = null;
     public Handler BehaviorTreeHandler = null;
-    public EditText ipTextfield = null;
+    public EditText ipTextfield,serve_ipEdit,serve_portEdit = null;
     public boolean imgRunning = false;
     public Object objLock = new Object();
     public Set deviceSet = new HashSet();
@@ -74,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                controlTool= ControlTool.getInstance();
+                controlTool= ControlTool.getInstance(MainActivity.this);
             }
         }).start();
 
@@ -90,6 +91,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
     private void init(){
+        serve_ipEdit= (EditText) findViewById(R.id.ipInputAddress);
+        serve_portEdit= (EditText) findViewById(R.id.ipInputPort);
         checkIfFirstRunning();
         initToolbar();
         initRunningBehavior();
@@ -101,6 +104,13 @@ public class MainActivity extends AppCompatActivity {
         initBonjour();
         initPostureManager();
         initStiffnessManager();
+        trybedown();
+    }
+//    后来进来的时候的操作
+    private void trybedown() {
+        if (Naoqi.getInstance().isRunning()){
+            connectSwitch.setChecked(true);
+        }
     }
 
     private void checkIfFirstRunning(){
@@ -214,48 +224,59 @@ public class MainActivity extends AppCompatActivity {
                 synchronized (objLock){
                     running = imgRunning;
                 }
-
-                if(!running){
-                    imgRunning = true;
-
-                    Editable editableText;
-                    try {
-                        editableText = ipTextfield.getText();
-                        keyListener = ipTextfield.getKeyListener();
-                        ipTextfield.setKeyListener(null);
-                    }
-                    catch (NullPointerException e){
-                        return;
-                    }
-                    String ip = editableText.toString();
-                    if(Utillity.isIPValid(ip)){
-                        Naoqi.getInstance().init("tcp://" + ip + ":9559");
-                        getToolbar().setTitle("Connected to "+ip);
+                if (serve_ipEdit.getText().toString().equals("")||serve_portEdit.getText().toString().equals("")||ipTextfield.getText().toString().equals("")){
+                    Toast.makeText(MainActivity.this,"请填写完整的信息",Toast.LENGTH_SHORT).show();
+                    connectSwitch.setChecked(false);
+                }
+                else {
+                    if(!running){
+                        imgRunning = true;
+                        SharedPreferences sp = getSharedPreferences("serve_ip", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sp.edit();
+                        editor.putString("ip",serve_ipEdit.getText().toString());
+                        editor.putInt("port", Integer.parseInt(serve_portEdit.getText().toString()));
+                        editor.putInt("tag", 1);
+                        editor.commit();
+                        Editable editableText;
                         try {
-                            BehaviorManager.getInstance().Init(Naoqi.getInstance());
-                            postureManager.Init(postureManagerHandler);
-                            stiffnessManager.Init(stiffnessHandler);
-                            initControlTool();
+                            editableText = ipTextfield.getText();
+                            keyListener = ipTextfield.getKeyListener();
+                            ipTextfield.setKeyListener(null);
                         }
-                        catch (Exception e){
-                            e.printStackTrace();
-                            System.out.println(e.getMessage());
+                        catch (NullPointerException e){
+                            return;
+                        }
+                        String ip = editableText.toString();
+                        if(Utillity.isIPValid(ip)){
+                            Naoqi.getInstance().init("tcp://" + ip + ":9559");
+                            getToolbar().setTitle("Connected to "+ip);
+                            try {
+                                BehaviorManager.getInstance().Init(Naoqi.getInstance());
+                                postureManager.Init(postureManagerHandler);
+                                stiffnessManager.Init(stiffnessHandler);
+                                initControlTool();
+                            }
+                            catch (Exception e){
+                                e.printStackTrace();
+                                System.out.println(e.getMessage());
+                            }
+                        }
+                        else{
+                            Message msg = new Message();
+                            msg.obj = ip + "is invalid\n";
                         }
                     }
                     else{
-                        Message msg = new Message();
-                        msg.obj = ip + "is invalid\n";
+                        ipTextfield.setKeyListener(keyListener);
+                        Naoqi.getInstance().stop();
+                        postureManager.interrupt();
+                        stiffnessManager.interrupt();
+                        BehaviorManager.getInstance().interrupt();
+                        System.out.println("tried to disconnect");
+                        stopMySocket();
+                        imgRunning = false;
                     }
-                }
-                else{
-                    ipTextfield.setKeyListener(keyListener);
-                    Naoqi.getInstance().stop();
-                    postureManager.interrupt();
-                    stiffnessManager.interrupt();
-                    BehaviorManager.getInstance().interrupt();
-                    System.out.println("tried to disconnect");
-                    stopMySocket();
-                    imgRunning = false;
+
                 }
 
             }

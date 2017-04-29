@@ -32,7 +32,7 @@ public class PostureActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                controlTool=ControlTool.getInstance();
+                controlTool=ControlTool.getInstance(PostureActivity.this);
             }
         }).start();
     }

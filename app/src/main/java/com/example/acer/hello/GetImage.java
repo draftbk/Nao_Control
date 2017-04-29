@@ -69,6 +69,8 @@ public class GetImage implements Runnable{
             bitmap.copyPixelsFromBuffer(ARBGbuffer);
             _sendMessageToImageView(bitmap);
         }catch (Exception e){
+            video.call("exit");
+            Thread.sleep(3000);
             Log.e("test","播放出错了"+e);
         }
     }
@@ -104,5 +106,6 @@ public class GetImage implements Runnable{
             e.printStackTrace();
             System.out.println(e.getMessage());
         }
+
     }
 }

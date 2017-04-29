@@ -48,7 +48,7 @@ public class VideoActivity extends AppCompatActivity{
         new Thread(new Runnable() {
             @Override
             public void run() {
-                controlTool=ControlTool.getInstance();
+                controlTool=ControlTool.getInstance(VideoActivity.this);
             }
         }).start();
 

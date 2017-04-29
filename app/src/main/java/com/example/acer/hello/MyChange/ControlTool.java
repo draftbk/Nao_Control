@@ -1,5 +1,7 @@
 package com.example.acer.hello.MyChange;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Message;
@@ -20,11 +22,17 @@ public class ControlTool {
     private static ControlTool instance = null;
     private Socket socket;
     static {
-        instance = new ControlTool();
+        instance = new ControlTool("192.168.0.105",6688);
     }
-    public static ControlTool getInstance() {
+    public static ControlTool getInstance(Context context) {
+        SharedPreferences sp = context.getSharedPreferences("serve_ip", Context.MODE_PRIVATE);
+        String ip = sp.getString("ip", null);
+        int port = sp.getInt("port", 0);
+        int tag = sp.getInt("tag", 0);
         if (instance==null){
-            instance=new ControlTool();
+            if (tag!=1){
+                instance=new ControlTool(ip,port);
+            }
         }
         return instance;
     }
@@ -36,10 +44,10 @@ public class ControlTool {
             e.printStackTrace();
         }
     }
-    ControlTool() {
+    ControlTool(String ip,int port) {
         // 创建一个Socket对象，并指定服务端的IP及端口号
         try {
-            socket = new Socket("192.168.0.105",6688);
+            socket = new Socket(ip,port);
         } catch (Exception e) {
             e.printStackTrace();
         }
