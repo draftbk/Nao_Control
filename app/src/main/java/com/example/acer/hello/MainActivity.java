@@ -151,7 +151,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void initDeviceSpinner(){
         ipTextfield = (EditText) findViewById(R.id.ipInputBox);
-
         deviceSpinner = (Spinner) findViewById(R.id.deviceSpinner);
         deviceNames = new ArrayList();
         deviceNames.add("none");

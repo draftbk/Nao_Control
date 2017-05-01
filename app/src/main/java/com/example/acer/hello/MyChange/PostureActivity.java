@@ -1,5 +1,7 @@
 package com.example.acer.hello.MyChange;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -76,6 +78,42 @@ public class PostureActivity extends AppCompatActivity {
                 }
             }
         });
+
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                position=position-listView.getHeaderViewsCount();
+                Log.e("test","position"+position);
+                final int finalPosition = position;
+                dialog_choose();
+                return false;
+            }
+        });
+    }
+    private void dialog_choose() {
+        final String items[]={"修改","添加","删除"};
+        //dialog参数设置
+        AlertDialog.Builder builder=new AlertDialog.Builder(this);  //先得到构造器
+        builder.setTitle("修改"); //设置标题
+        //builder.setMessage("是否确认退出?"); //设置内容
+        builder.setIcon(R.mipmap.robot);//设置图标，图片id即可
+        //设置列表显示，注意设置了列表显示就不要设置builder.setMessage()了，否则列表不起作用。
+        builder.setItems(items,new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                Toast.makeText(PostureActivity.this, items[which], Toast.LENGTH_SHORT).show();
+
+            }
+        });
+        builder.setPositiveButton("确定",new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                Toast.makeText(PostureActivity.this, "确定", Toast.LENGTH_SHORT).show();
+            }
+        });
+        builder.create().show();
     }
     class DemoAdapter extends BaseAdapter {
         @Override

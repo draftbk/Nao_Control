@@ -75,12 +75,12 @@ public class FirstActivity extends AppCompatActivity {
                             case 2:
                                 Toast.makeText(getApplicationContext(), "列表",
                                         Toast.LENGTH_SHORT).show();
-                                new Thread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        controlTool.connectServerWithTCPSocket("24");
-                                    }
-                                }).start();
+//                                new Thread(new Runnable() {
+//                                    @Override
+//                                    public void run() {
+//                                        controlTool.connectServerWithTCPSocket("24");
+//                                    }
+//                                }).start();
                                 Intent intent2=new Intent(FirstActivity.this,PostureActivity.class);
                                 startActivity(intent2);
                                 break;
